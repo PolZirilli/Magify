@@ -1,0 +1,631 @@
+/* ==========================================================
+   MAGIFY — paleta y tokens
+   Ajustá estos hex para que coincidan exacto con tu
+   Assets.xcassets (bgMain, magicBlue, gold, celeste,
+   whitePixel, blackPixel, violet).
+   ========================================================== */
+:root {
+  --bgMain: #170b28;
+  --magicBlue: #241a5e;
+  --gold: #d4af37;
+  --celeste: #7dd3fc;
+  --whitePixel: #f5f0e8;
+  --blackPixel: #0d0710;
+  --violet: #4c1d95;
+
+  --font-pixel: 'Press Start 2P', monospace;
+  --radius-card: 24px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  background: var(--bgMain);
+  color: var(--whitePixel);
+  font-family: var(--font-pixel);
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+input {
+  font-family: var(--font-pixel);
+}
+
+/* ---------- Fondo pixel art global ---------- */
+.pixel-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: radial-gradient(circle at 30% 15%, var(--violet) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bgMain) 0%, var(--magicBlue) 55%, var(--bgMain) 100%);
+  overflow: hidden;
+}
+
+.pixel-bg span {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--whitePixel);
+  opacity: 0.6;
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.pixel-bg span.gold-star {
+  background: var(--gold);
+}
+
+.pixel-bg span.cel-star {
+  background: var(--celeste);
+}
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+/* ---------- App shell ---------- */
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.view {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px calc(96px + env(safe-area-inset-bottom)) 18px;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ---------- Header ---------- */
+.app-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.app-logo {
+  width: 84px;
+  height: 84px;
+  display: block;
+  margin: 0 auto 0 auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+.brand {
+  font-size: 10px;
+  color: var(--celeste);
+  letter-spacing: 3px;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 8px rgba(125, 211, 252, 0.5);
+}
+
+.title-gold {
+  font-size: 16px;
+  color: var(--gold);
+  margin: 0;
+  line-height: 1.6;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+/* ---------- Buscador: input ---------- */
+.search-wrap {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(76, 29, 149, 0.35);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 4px 6px 4px 14px;
+}
+
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--whitePixel);
+  font-size: 12px;
+  padding: 12px 0;
+}
+
+.search-input::placeholder {
+  color: rgba(245, 240, 232, 0.4);
+  font-size: 10px;
+}
+
+.search-btn {
+  background: none;
+  border: none;
+  color: var(--gold);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-status {
+  min-height: 18px;
+  font-size: 10px;
+  color: var(--celeste);
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.search-status.error {
+  color: #ff6b6b;
+}
+
+/* ---------- Autocompletado ---------- */
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  background: var(--bgMain);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  max-height: 260px;
+  overflow-y: auto;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+}
+
+.autocomplete-item {
+  padding: 10px 10px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--whitePixel);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.active {
+  background: rgba(212, 175, 55, 0.18);
+  color: var(--gold);
+}
+
+/* ---------- Galería de resultados ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.result-card {
+  background: rgba(76, 29, 149, 0.22);
+  border-radius: var(--radius-card);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.result-card:active {
+  transform: scale(0.96);
+}
+
+.result-card img {
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  background: var(--blackPixel);
+}
+
+.result-card .card-name {
+  font-size: 8px;
+  color: var(--whitePixel);
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.placeholder-art {
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  border-radius: var(--radius-card);
+  background: repeating-linear-gradient(45deg, var(--magicBlue), var(--magicBlue) 6px, var(--bgMain) 6px, var(--bgMain) 12px);
+}
+
+/* ---------- Barajar ---------- */
+.barajar-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.random-card-wrap {
+  width: 78%;
+  max-width: 320px;
+  aspect-ratio: 5 / 7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-card);
+  border: 2px dashed rgba(212, 175, 55, 0.4);
+  padding: 0px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, opacity 0.15s ease;
+}
+
+.random-card-wrap:active {
+  transform: scale(0.97);
+}
+
+.random-card-wrap.loading {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.random-card-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+}
+
+.hint-text {
+  font-size: 9px;
+  color: rgba(245, 240, 232, 0.55);
+  line-height: 1.8;
+}
+
+.ver-mas-btn {
+  background: none;
+  border: none;
+  color: var(--celeste);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 6px 10px;
+  text-transform: uppercase;
+}
+
+.ver-mas-btn:active {
+  opacity: 0.7;
+}
+
+/* ---------- Detalle de carta ---------- */
+.detail-view {
+  padding: 20px 18px calc(40px + env(safe-area-inset-bottom)) 18px;
+  overflow-y: auto;
+}
+
+.close-btn {
+  position: absolute;
+  top: calc(18px + env(safe-area-inset-top));
+  right: 18px;
+  z-index: 5;
+  background: none;
+  border: none;
+  color: var(--gold);
+  cursor: pointer;
+  padding: 6px;
+}
+
+.detail-app-header {
+  margin-bottom: 16px;
+}
+
+.detail-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.detail-img {
+  width: 95%;
+  max-width: 460px;
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.detail-info {
+  width: 100%;
+  max-width: 460px;
+  background: rgba(212, 175, 55, 0.08);
+  border-radius: var(--radius-card);
+  padding: 22px 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.detail-name {
+  font-size: 15px;
+  color: var(--gold);
+  line-height: 100%;
+  margin: 0px;
+}
+
+.detail-row {
+  font-size: 10px;
+  color: var(--whitePixel);
+  line-height: 1.9;
+}
+
+.detail-row .label {
+  color: var(--celeste);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.detail-oracle {
+  font-size: 10px;
+  color: var(--whitePixel);
+  line-height: 2;
+  opacity: 0.9;
+  white-space: pre-line;
+}
+
+.detail-flavor {
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* ---------- Bullets tipo "Label: valor" en una sola línea ---------- */
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-bullet {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.9;
+  color: var(--whitePixel);
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.detail-bullet::before {
+  content: "▸";
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.detail-bullet .label {
+  color: var(--celeste);
+  white-space: nowrap;
+}
+
+.detail-bullet .value {
+  color: var(--whitePixel);
+}
+
+/* ---------- Enlaces del detalle ---------- */
+.detail-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.detail-link {
+  flex: 1 1 auto;
+  font-size: 9px;
+  color: var(--gold);
+  text-decoration: none;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 10px;
+  padding: 10px 10px;
+  text-align: center;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.detail-link:active,
+.detail-link:hover {
+  background: rgba(212, 175, 55, 0.12);
+}
+
+/* ---------- Carrusel de artes del mismo artista ---------- */
+.artist-carousel-wrap {
+  width: 100%;
+  max-width: 460px;
+  margin-top: 26px;
+}
+
+.carousel-title {
+  font-size: 11px;
+  color: var(--gold);
+  text-align: center;
+  margin: 0 0 14px 0;
+  line-height: 1.6;
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.35);
+}
+
+.artist-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 2px 2px 10px 2px;
+  scroll-snap-type: x proximity;
+}
+
+.artist-carousel-item {
+  flex: 0 0 auto;
+  width: 100px;
+  scroll-snap-align: start;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.12s ease;
+}
+
+.artist-carousel-item:active {
+  transform: scale(0.95);
+}
+
+.artist-carousel-item img {
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+  background: var(--blackPixel);
+}
+
+.artist-carousel-item .name {
+  font-size: 7px;
+  color: var(--whitePixel);
+  margin: 6px 0 0 0;
+  line-height: 1.5;
+}
+
+.artist-carousel-empty {
+  font-size: 9px;
+  color: rgba(245, 240, 232, 0.5);
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+/* ---------- Nav inferior ---------- */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 10px;
+  background: rgb(255 255 255 / 0%);
+  backdrop-filter: blur(10px);
+  border: 0px solid var(--gold);
+  border-radius: 20px;
+  padding: 0px 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+}
+
+.nav-btn {
+  width: 84px;
+  min-width: 84px;
+  height: 72px;
+  border-radius: 16px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+
+.nav-btn img {
+  width: 84px;
+  height: 70px;
+  image-rendering: pixelated;
+}
+
+.nav-btn.active {
+  opacity: 1;
+  background: rgba(212, 175, 55, 0.18);
+}
+
+/* ---------- Responsive: pantallas más anchas (tablet/desktop) ---------- */
+@media (min-width: 640px) {
+  .app {
+    align-items: center;
+  }
+
+  .view {
+    max-width: 640px;
+    width: 100%;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ---------- Detalle de carta: dos columnas en desktop ----------
+   Mobile/tablet (< 900px): se mantiene apilado (carta arriba, info abajo).
+   Desktop (>= 900px): carta a la izquierda, info a la derecha. */
+@media (min-width: 900px) {
+  .view.detail-view {
+    max-width: 1080px;
+  }
+
+  .detail-scroll {
+    display: grid;
+    grid-template-columns: minmax(280px, 420px) 1fr;
+    align-items: start;
+    gap: 40px;
+    margin-top: 30px;
+  }
+
+  .detail-img {
+    width: 100%;
+    max-width: 100%;
+    position: sticky;
+    top: 20px;
+  }
+
+  .detail-info {
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  /* El carrusel ocupa todo el ancho, debajo de las dos columnas */
+  .artist-carousel-wrap {
+    grid-column: 1 / -1;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+}
